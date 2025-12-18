@@ -1,0 +1,7 @@
+{
+  "name": "ARN44 - African Radio Network",
+  "description": "A monetization infrastructure for African radio stations, powered by the AirPay44 engine. Supports tips, shoutouts, subscriptions, and AI-driven live broadcast alerts.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
