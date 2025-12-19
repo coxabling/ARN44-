@@ -60,7 +60,10 @@ const Home: React.FC<HomeProps> = ({ onSelectStation }) => {
         <section className="space-y-6">
           <div className="flex justify-between items-end">
             <h2 className="text-3xl font-black text-gray-900">Explore Stations</h2>
-            <button className="text-[#E5A443] font-bold flex items-center gap-1 hover:gap-2 transition-all">
+            <button 
+              onClick={() => alert("Loading full station directory...")}
+              className="text-[#E5A443] font-bold flex items-center gap-1 hover:gap-2 transition-all"
+            >
               SEE ALL <ChevronRight size={20} />
             </button>
           </div>
@@ -73,7 +76,7 @@ const Home: React.FC<HomeProps> = ({ onSelectStation }) => {
                 className="bg-white group rounded-[2.5rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all cursor-pointer border border-gray-100 hover:-translate-y-2"
               >
                 <div className="h-48 relative overflow-hidden">
-                  <img src={station.logo} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <img src={station.logo} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt={station.name} />
                   <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-2xl flex items-center gap-1 text-sm font-bold shadow-sm">
                     <MapPin size={16} className="text-[#E5A443]" />
                     {station.country}
@@ -87,11 +90,19 @@ const Home: React.FC<HomeProps> = ({ onSelectStation }) => {
                   <div className="flex items-center justify-between pt-4 border-t border-gray-50">
                     <div className="flex -space-x-3">
                       {[1,2,3].map(i => (
-                        <img key={i} src={`https://picsum.photos/seed/${i + station.id}/50/50`} className="w-10 h-10 rounded-full border-4 border-white object-cover" />
+                        <img key={i} src={`https://picsum.photos/seed/${i + station.id}/50/50`} className="w-10 h-10 rounded-full border-4 border-white object-cover" alt="Supporter" />
                       ))}
                       <div className="w-10 h-10 rounded-full border-4 border-white bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-400">+20k</div>
                     </div>
-                    <button className="bg-[#E5A443] text-white px-6 py-2 rounded-xl font-bold text-sm shadow-lg shadow-[#E5A443]/30">SUPPORT</button>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onSelectStation(station);
+                      }}
+                      className="bg-[#E5A443] text-white px-6 py-2 rounded-xl font-bold text-sm shadow-lg shadow-[#E5A443]/30 hover:scale-105 active:scale-95 transition-transform"
+                    >
+                      SUPPORT
+                    </button>
                   </div>
                 </div>
               </div>
@@ -104,7 +115,12 @@ const Home: React.FC<HomeProps> = ({ onSelectStation }) => {
             <div className="relative z-10 space-y-6 max-w-xl">
                 <h2 className="text-4xl md:text-5xl font-black leading-tight">Advertise Across the Entire Network.</h2>
                 <p className="text-xl opacity-90">Reach millions of listeners across Africa and the Diaspora. Start your campaign in 5 minutes.</p>
-                <button className="bg-black text-white px-10 py-5 rounded-2xl font-black text-lg shadow-2xl hover:scale-105 transition-transform">GET STARTED NOW</button>
+                <button 
+                  onClick={() => alert("Redirecting to Advertiser Onboarding...")}
+                  className="bg-black text-white px-10 py-5 rounded-2xl font-black text-lg shadow-2xl hover:scale-105 active:scale-95 transition-all"
+                >
+                  GET STARTED NOW
+                </button>
             </div>
             {/* Design Element */}
             <div className="absolute right-[-10%] top-[-20%] w-[500px] h-[500px] bg-white opacity-5 rounded-full blur-3xl"></div>

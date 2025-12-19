@@ -31,6 +31,10 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
     }, 2000);
   };
 
+  const handleAction = (type: string) => {
+    alert(`${type} feature coming soon to your studio dashboard!`);
+  };
+
   return (
     <div className="min-h-screen md:ml-64 p-6 md:p-10 african-pattern pb-24 md:pb-10">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -40,8 +44,18 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
             <p className="text-gray-500">Managing {station.name}</p>
           </div>
           <div className="flex gap-3">
-             <button className="bg-white border-2 border-[#E5A443] text-[#E5A443] px-6 py-2 rounded-xl font-bold">Edit Profile</button>
-             <button className="bg-[#E5A443] text-white px-6 py-2 rounded-xl font-bold shadow-lg shadow-orange-200">Withdraw Funds</button>
+             <button 
+              onClick={() => handleAction('Edit Profile')}
+              className="bg-white border-2 border-[#E5A443] text-[#E5A443] px-6 py-2 rounded-xl font-bold hover:bg-[#E5A443]/5 transition-colors"
+             >
+               Edit Profile
+             </button>
+             <button 
+              onClick={() => handleAction('Withdraw Funds')}
+              className="bg-[#E5A443] text-white px-6 py-2 rounded-xl font-bold shadow-lg shadow-orange-200 hover:scale-105 active:scale-95 transition-transform"
+             >
+               Withdraw Funds
+             </button>
           </div>
         </header>
 
@@ -57,12 +71,15 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
                     <button 
                         onClick={handleOptimize}
                         disabled={isOptimizing}
-                        className="bg-[#E5A443] text-white px-8 py-3 rounded-2xl font-black flex items-center gap-2 hover:scale-105 transition-transform"
+                        className="bg-[#E5A443] text-white px-8 py-3 rounded-2xl font-black flex items-center gap-2 hover:scale-105 active:scale-95 transition-transform disabled:opacity-50 disabled:scale-100"
                     >
                         <Zap size={18} fill="white" />
                         {isOptimizing ? 'APPLYING...' : 'APPLY OPTIMIZED SETTINGS'}
                     </button>
-                    <button className="bg-white/10 hover:bg-white/20 px-6 py-3 rounded-2xl font-bold transition-all flex items-center gap-2">
+                    <button 
+                      onClick={() => handleAction('Growth Share')}
+                      className="bg-white/10 hover:bg-white/20 px-6 py-3 rounded-2xl font-bold transition-all flex items-center gap-2 active:scale-95"
+                    >
                         <Share2 size={18} />
                         DAILY GROWTH SHARE
                     </button>
@@ -160,15 +177,20 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
                 { name: 'Musa', type: 'tip', msg: 'Great energy today!', price: 2 },
                 { name: 'Efya', type: 'shoutout', msg: 'Testing the new AirPay link!', price: 5 },
               ].map((item, i) => (
-                <div key={i} className="flex gap-4 p-4 hover:bg-gray-50 rounded-2xl transition-all group">
-                   <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500 font-bold">
+                <div key={i} className="flex gap-4 p-4 hover:bg-gray-50 rounded-2xl transition-all group items-center">
+                   <div className="w-12 h-12 rounded-xl bg-orange-50 flex-shrink-0 flex items-center justify-center text-orange-500 font-bold">
                       ${item.price}
                    </div>
-                   <div className="flex-1">
-                      <p className="text-sm font-black text-gray-900">{item.name} <span className="font-normal text-gray-400 capitalize">• {item.type}</span></p>
-                      <p className="text-xs text-gray-500 mt-1 line-clamp-2">"{item.msg}"</p>
+                   <div className="flex-1 min-w-0">
+                      <p className="text-sm font-black text-gray-900 truncate">{item.name} <span className="font-normal text-gray-400 capitalize">• {item.type}</span></p>
+                      <p className="text-xs text-gray-500 mt-1 line-clamp-1 italic">"{item.msg}"</p>
                    </div>
-                   <button className="opacity-0 group-hover:opacity-100 bg-[#2C5F2D] text-white p-2 rounded-lg text-xs font-bold transition-all">READ</button>
+                   <button 
+                    onClick={() => handleAction(`Processing ${item.type} from ${item.name}`)}
+                    className="opacity-0 group-hover:opacity-100 bg-[#2C5F2D] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105 active:scale-95"
+                   >
+                     READ
+                   </button>
                 </div>
               ))}
             </div>
