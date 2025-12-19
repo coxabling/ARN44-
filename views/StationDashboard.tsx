@@ -1,10 +1,9 @@
 
 import React, { useState } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Users, Wallet, ArrowUpRight, MessageSquare, Music, Rocket, CheckCircle2, Share2, Zap } from 'lucide-react';
 import { Station } from '../types';
 
-const data = [
+const revenueData = [
   { name: 'Mon', revenue: 400 },
   { name: 'Tue', revenue: 300 },
   { name: 'Wed', revenue: 600 },
@@ -13,6 +12,64 @@ const data = [
   { name: 'Sat', revenue: 900 },
   { name: 'Sun', revenue: 1100 },
 ];
+
+/**
+ * A lightweight SVG-based Area Chart to replace heavy recharts dependency.
+ * This avoids 'eval' usage and is much faster on low-bandwidth connections.
+ */
+const SimpleAreaChart = ({ data }: { data: typeof revenueData }) => {
+  const maxVal = Math.max(...data.map(d => d.revenue)) * 1.2;
+  const width = 400;
+  const height = 200;
+  
+  const points = data.map((d, i) => {
+    const x = (i / (data.length - 1)) * width;
+    const y = height - (d.revenue / maxVal) * height;
+    return `${x},${y}`;
+  }).join(' ');
+
+  const fillPath = `0,${height} ${points} ${width},${height}`;
+
+  return (
+    <div className="w-full h-full relative">
+      <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full overflow-visible">
+        {/* Grid lines */}
+        {[0, 0.25, 0.5, 0.75, 1].map((p) => (
+          <line 
+            key={p} 
+            x1="0" y1={height * p} x2={width} y2={height * p} 
+            stroke="#f0f0f0" strokeWidth="1" 
+          />
+        ))}
+        {/* Area Fill */}
+        <polygon points={fillPath} fill="rgba(229, 164, 67, 0.1)" />
+        {/* Line */}
+        <polyline
+          fill="none"
+          stroke="#E5A443"
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          points={points}
+        />
+        {/* Data points */}
+        {data.map((d, i) => {
+          const x = (i / (data.length - 1)) * width;
+          const y = height - (d.revenue / maxVal) * height;
+          return (
+            <circle key={i} cx={x} cy={y} r="4" fill="#E5A443" stroke="white" strokeWidth="2" />
+          );
+        })}
+      </svg>
+      {/* Labels */}
+      <div className="flex justify-between mt-2 px-1">
+        {data.map(d => (
+          <span key={d.name} className="text-[10px] font-bold text-gray-400">{d.name}</span>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
   const [isOptimizing, setIsOptimizing] = useState(false);
@@ -142,25 +199,11 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Chart */}
+          {/* Custom SVG Chart */}
           <div className="lg:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
             <h3 className="text-xl font-bold mb-6">Revenue Growth (7d)</h3>
-            <div className="h-80">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={data}>
-                  <defs>
-                    <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#E5A443" stopOpacity={0.1}/>
-                      <stop offset="95%" stopColor="#E5A443" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} />
-                  <YAxis axisLine={false} tickLine={false} />
-                  <Tooltip />
-                  <Area type="monotone" dataKey="revenue" stroke="#E5A443" strokeWidth={3} fillOpacity={1} fill="url(#colorRev)" />
-                </AreaChart>
-              </ResponsiveContainer>
+            <div className="h-80 w-full pt-4">
+              <SimpleAreaChart data={revenueData} />
             </div>
           </div>
 
