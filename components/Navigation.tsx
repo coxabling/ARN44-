@@ -17,7 +17,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, onNavigate, role }
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around p-2 z-50 md:top-0 md:bottom-auto md:flex-col md:w-64 md:h-screen md:justify-start md:p-6 md:border-r md:border-t-0 africans-pattern">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around p-2 z-50 md:top-0 md:bottom-auto md:flex-col md:w-64 md:h-screen md:justify-start md:p-6 md:border-r md:border-t-0 african-pattern">
       <div className="hidden md:flex items-center gap-2 mb-10">
         <div className="bg-[#E5A443] p-2 rounded-lg">
           <Radio className="text-white" size={24} />
