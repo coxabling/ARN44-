@@ -66,7 +66,7 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
   }, []);
 
   const handleShare = () => {
-    const text = `Support ${station.name} on ARN44! 📻🌍`;
+    const text = `Listen to ${station.name} on ARN44! 🌍 📻`;
     const url = window.location.href;
     window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
   };
@@ -79,14 +79,12 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
     setIsTyping(true);
 
     try {
-      // Create a fresh instance of GoogleGenAI right before making the API call to ensure we use current environment variables
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: `You are the AI sidekick for "${station.name}", a radio station in ${station.country}. 
         The listener says: "${userMsg}". Keep the response under 60 words and be very enthusiastic about African radio culture!`,
       });
-      // Extract generated text from GenerateContentResponse using the .text property
       setChatHistory(prev => [...prev, { role: 'ai', text: response.text || "That's amazing! Keep listening!" }]);
     } catch (err) {
       setChatHistory(prev => [...prev, { role: 'ai', text: "Sorry, I'm a bit overwhelmed by all the music! Let's talk again in a second." }]);
@@ -110,6 +108,17 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
          <img src={station.logo} className="w-full h-full object-cover blur-2xl scale-110 opacity-40" alt="" />
          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#FDFCFB] dark:to-[#0A0A0A]"></div>
          
+         {/* Dedicated Floating Share Button */}
+         <div className="absolute top-6 right-6 md:right-10 z-20">
+            <button 
+              onClick={handleShare}
+              className="bg-white/10 hover:bg-white/20 hover:border-primary/50 backdrop-blur-md p-4 rounded-full text-white border border-white/10 transition-all group active:scale-95 shadow-2xl"
+              title="Share Station"
+            >
+              <Share2 size={24} className="group-hover:rotate-12 transition-transform" />
+            </button>
+         </div>
+
          <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
             <div className="w-32 h-32 md:w-48 md:h-48 rounded-[3rem] shadow-2xl border-4 border-white dark:border-[#1A1A1A] overflow-hidden mb-6 group cursor-pointer" onClick={togglePlayback}>
                 <img src={station.logo} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={station.name} />
@@ -119,7 +128,6 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
             </div>
             <h1 className="text-4xl md:text-6xl font-black text-gray-900 dark:text-white tracking-tighter">{station.name}</h1>
             <div className="flex items-center gap-2 text-primary font-black uppercase text-[10px] tracking-widest mt-2">
-                {/* Fixed the "Cannot find name 'MapPin'" error by adding the missing import */}
                 <MapPin size={12} /> {station.country} • LIVE NOW
             </div>
          </div>
@@ -152,7 +160,7 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
                     <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-lg font-medium">{station.description}</p>
                     
                     <div className="flex flex-wrap gap-4 mt-8">
-                        <button onClick={handleShare} className="bg-green-500 text-white px-8 py-3 rounded-2xl font-black text-xs flex items-center gap-2 hover:bg-green-600 transition-colors">
+                        <button onClick={handleShare} className="bg-green-500 text-white px-8 py-3 rounded-2xl font-black text-xs flex items-center gap-2 hover:bg-green-600 transition-colors shadow-lg shadow-green-900/10">
                             <Share2 size={16} /> SHARE ON WHATSAPP
                         </button>
                         <button className="bg-gray-100 dark:bg-[#2A2A2A] text-gray-900 dark:text-white px-8 py-3 rounded-2xl font-black text-xs flex items-center gap-2 hover:bg-gray-200 dark:hover:bg-[#333] transition-colors">
