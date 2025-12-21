@@ -17,6 +17,38 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
   const [chatMessage, setChatMessage] = useState('');
   const [chatHistory, setChatHistory] = useState<{ role: string, text: string }[]>([]);
   const [isTyping, setIsTyping] = useState(false);
+  
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // Reset audio when station changes
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+      setIsPlaying(false);
+    }
+  }, [station.id]);
+
+  const togglePlayback = () => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio(station.streamUrl);
+      audioRef.current.onplay = () => setIsPlaying(true);
+      audioRef.current.onpause = () => setIsPlaying(false);
+      audioRef.current.onerror = () => {
+        alert("Failed to load stream. Please try again later.");
+        setIsPlaying(false);
+      };
+    }
+
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play().catch(err => {
+        console.error("Playback error:", err);
+        alert("Could not start audio playback. Some browsers require a user interaction first.");
+      });
+    }
+  };
 
   useEffect(() => {
     const events = [
@@ -107,7 +139,7 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
               
               <div className="flex flex-wrap gap-4 pt-4 justify-center md:justify-start">
                 <button 
-                  onClick={() => setIsPlaying(!isPlaying)}
+                  onClick={togglePlayback}
                   className={`flex items-center gap-2 px-8 py-3 rounded-full font-bold transition-all shadow-lg ${
                     isPlaying ? 'bg-red-500 hover:bg-red-600 text-white' : 'bg-[#2C5F2D] hover:bg-[#1e421e] text-white hover:scale-105'
                   }`}
