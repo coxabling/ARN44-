@@ -43,21 +43,21 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ station, onClose, type }) =
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-      <div className="bg-white w-full max-w-md rounded-3xl overflow-hidden shadow-2xl african-pattern">
+      <div className="bg-white dark:bg-[#1E1E1E] w-full max-w-md rounded-3xl overflow-hidden shadow-2xl african-pattern transition-colors">
         <div className="p-6">
           <div className="flex justify-between items-center mb-6">
             <div className="flex items-center gap-3">
               {getIcon()}
-              <h3 className="text-xl font-bold capitalize">{type}</h3>
+              <h3 className="text-xl font-bold capitalize dark:text-white">{type}</h3>
             </div>
-            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
+            <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-[#2A2A2A] rounded-full dark:text-gray-400">
               <X size={24} />
             </button>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Select Amount (USD)</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Select Amount (USD)</label>
               <div className="grid grid-cols-4 gap-2">
                 {['2', '5', '10', '25'].map(val => (
                   <button
@@ -65,7 +65,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ station, onClose, type }) =
                     type="button"
                     onClick={() => setAmount(val)}
                     className={`py-2 rounded-xl border-2 transition-all ${
-                      amount === val ? 'bg-[#E5A443] border-[#E5A443] text-white' : 'border-gray-200 text-gray-600'
+                      amount === val ? 'bg-[#E5A443] border-[#E5A443] text-white' : 'border-gray-200 dark:border-gray-800 text-gray-600 dark:text-gray-400'
                     }`}
                   >
                     ${val}
@@ -75,12 +75,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ station, onClose, type }) =
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Your Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#E5A443] outline-none"
+                className="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-800 dark:bg-[#2A2A2A] dark:text-white focus:ring-2 focus:ring-[#E5A443] outline-none"
                 placeholder="Name or Alias"
                 required
               />
@@ -88,12 +88,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ station, onClose, type }) =
 
             {type === 'request' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Song Request</label>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Song Request</label>
                 <input
                   type="text"
                   value={song}
                   onChange={(e) => setSong(e.target.value)}
-                  className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#E5A443] outline-none"
+                  className="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-800 dark:bg-[#2A2A2A] dark:text-white focus:ring-2 focus:ring-[#E5A443] outline-none"
                   placeholder="Artist - Song Name"
                   required
                 />
@@ -101,11 +101,11 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ station, onClose, type }) =
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Message</label>
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-[#E5A443] outline-none"
+                className="w-full p-3 rounded-xl border border-gray-200 dark:border-gray-800 dark:bg-[#2A2A2A] dark:text-white focus:ring-2 focus:ring-[#E5A443] outline-none"
                 placeholder="Say something to the DJ..."
                 rows={3}
               />
@@ -118,7 +118,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ station, onClose, type }) =
             >
               {isProcessing ? 'Processing...' : `Pay $${amount} via AirPay44`}
             </button>
-            <p className="text-center text-xs text-gray-400">Powered by AirPay44 - Secure African Payments</p>
+            <p className="text-center text-xs text-gray-400 dark:text-gray-600">Powered by AirPay44 - Secure African Payments</p>
           </form>
         </div>
       </div>

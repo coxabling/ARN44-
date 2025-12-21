@@ -29,16 +29,16 @@ const SimpleAreaChart = ({ data }: { data: typeof revenueData }) => {
     <div className="w-full h-full relative">
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full overflow-visible">
         {[0, 0.25, 0.5, 0.75, 1].map((p) => (
-          <line key={p} x1="0" y1={height * p} x2={width} y2={height * p} stroke="#f0f0f0" strokeWidth="1" />
+          <line key={p} x1="0" y1={height * p} x2={width} y2={height * p} className="stroke-gray-100 dark:stroke-gray-800" strokeWidth="1" />
         ))}
-        <polygon points={fillPath} fill="rgba(229, 164, 67, 0.1)" />
+        <polygon points={fillPath} className="fill-[#E5A443]/10 dark:fill-[#E5A443]/5" />
         <polyline fill="none" stroke="#E5A443" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" points={points} />
         {data.map((d, i) => (
-          <circle key={i} cx={(i / (data.length - 1)) * width} cy={height - (d.revenue / maxVal) * height} r="4" fill="#E5A443" stroke="white" strokeWidth="2" />
+          <circle key={i} cx={(i / (data.length - 1)) * width} cy={height - (d.revenue / maxVal) * height} r="4" fill="#E5A443" stroke="white" className="dark:stroke-[#1E1E1E]" strokeWidth="2" />
         ))}
       </svg>
       <div className="flex justify-between mt-2 px-1">
-        {data.map(d => <span key={d.name} className="text-[10px] font-bold text-gray-400">{d.name}</span>)}
+        {data.map(d => <span key={d.name} className="text-[10px] font-bold text-gray-400 dark:text-gray-600">{d.name}</span>)}
       </div>
     </div>
   );
@@ -82,16 +82,16 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
   };
 
   return (
-    <div className="min-h-screen md:ml-64 p-6 md:p-10 african-pattern pb-24 md:pb-10">
+    <div className="min-h-screen md:ml-64 p-6 md:p-10 african-pattern pb-24 md:pb-10 dark:bg-[#121212] transition-colors">
       <div className="max-w-6xl mx-auto space-y-8">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-black text-gray-900">Studio Command</h1>
-            <p className="text-gray-500">Managing {station.name}</p>
+            <h1 className="text-3xl font-black text-gray-900 dark:text-white">Studio Command</h1>
+            <p className="text-gray-500 dark:text-gray-400">Managing {station.name}</p>
           </div>
           <div className="flex gap-3">
-             <button onClick={() => handleAction('Edit Profile')} className="bg-white border-2 border-[#E5A443] text-[#E5A443] px-6 py-2 rounded-xl font-bold hover:bg-[#E5A443]/5 transition-colors">Edit Profile</button>
-             <button onClick={() => handleAction('Withdraw Funds')} className="bg-[#E5A443] text-white px-6 py-2 rounded-xl font-bold shadow-lg shadow-orange-200 hover:scale-105 active:scale-95 transition-transform">Withdraw Funds</button>
+             <button onClick={() => handleAction('Edit Profile')} className="bg-white dark:bg-[#1E1E1E] border-2 border-[#E5A443] text-[#E5A443] px-6 py-2 rounded-xl font-bold hover:bg-[#E5A443]/5 transition-colors">Edit Profile</button>
+             <button onClick={() => handleAction('Withdraw Funds')} className="bg-[#E5A443] text-white px-6 py-2 rounded-xl font-bold shadow-lg shadow-orange-200 dark:shadow-none hover:scale-105 active:scale-95 transition-transform">Withdraw Funds</button>
           </div>
         </header>
 
@@ -128,7 +128,7 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
           </div>
 
           {/* AI Strategy Advice */}
-          <div className="bg-[#1A1A1A] p-8 rounded-[2rem] text-white shadow-2xl flex flex-col justify-between border border-white/5 relative overflow-hidden group">
+          <div className="bg-[#1A1A1A] dark:bg-black p-8 rounded-[2rem] text-white shadow-2xl flex flex-col justify-between border border-white/5 relative overflow-hidden group">
             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform">
                 <BrainCircuit size={100} />
             </div>
@@ -156,50 +156,50 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+          <div className="bg-white dark:bg-[#1E1E1E] p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
             <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-green-100 text-green-600 rounded-2xl"><Wallet size={24}/></div>
-              <span className="text-xs font-bold text-green-500 flex items-center"><ArrowUpRight size={14}/> +12%</span>
+              <div className="p-3 bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 rounded-2xl"><Wallet size={24}/></div>
+              <span className="text-xs font-bold text-green-500 dark:text-green-400 flex items-center"><ArrowUpRight size={14}/> +12%</span>
             </div>
-            <p className="text-gray-500 text-sm font-medium">Total Balance</p>
-            <h3 className="text-2xl font-black text-gray-900">${station.metrics.totalRevenue.toLocaleString()}</h3>
+            <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Total Balance</p>
+            <h3 className="text-2xl font-black text-gray-900 dark:text-white">${station.metrics.totalRevenue.toLocaleString()}</h3>
           </div>
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+          <div className="bg-white dark:bg-[#1E1E1E] p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
             <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-blue-100 text-blue-600 rounded-2xl"><Users size={24}/></div>
-              <span className="text-xs font-bold text-blue-500 flex items-center"><ArrowUpRight size={14}/> +5%</span>
+              <div className="p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-2xl"><Users size={24}/></div>
+              <span className="text-xs font-bold text-blue-500 dark:text-blue-400 flex items-center"><ArrowUpRight size={14}/> +5%</span>
             </div>
-            <p className="text-gray-500 text-sm font-medium">Subscribers</p>
-            <h3 className="text-2xl font-black text-gray-900">{station.metrics.subscribers}</h3>
+            <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Subscribers</p>
+            <h3 className="text-2xl font-black text-gray-900 dark:text-white">{station.metrics.subscribers}</h3>
           </div>
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+          <div className="bg-white dark:bg-[#1E1E1E] p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
             <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-orange-100 text-orange-600 rounded-2xl"><MessageSquare size={24}/></div>
+              <div className="p-3 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-2xl"><MessageSquare size={24}/></div>
             </div>
-            <p className="text-gray-500 text-sm font-medium">Queue: Shoutouts</p>
-            <h3 className="text-2xl font-black text-gray-900">14</h3>
+            <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Queue: Shoutouts</p>
+            <h3 className="text-2xl font-black text-gray-900 dark:text-white">14</h3>
           </div>
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
+          <div className="bg-white dark:bg-[#1E1E1E] p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
             <div className="flex justify-between items-start mb-4">
-              <div className="p-3 bg-purple-100 text-purple-600 rounded-2xl"><Music size={24}/></div>
+              <div className="p-3 bg-purple-100 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 rounded-2xl"><Music size={24}/></div>
             </div>
-            <p className="text-gray-500 text-sm font-medium">Queue: Requests</p>
-            <h3 className="text-2xl font-black text-gray-900">8</h3>
+            <p className="text-gray-500 dark:text-gray-400 text-sm font-medium">Queue: Requests</p>
+            <h3 className="text-2xl font-black text-gray-900 dark:text-white">8</h3>
           </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
-            <h3 className="text-xl font-bold mb-6">Revenue Growth (7d)</h3>
+          <div className="lg:col-span-2 bg-white dark:bg-[#1E1E1E] p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
+            <h3 className="text-xl font-bold mb-6 dark:text-white">Revenue Growth (7d)</h3>
             <div className="h-80 w-full pt-4">
               <SimpleAreaChart data={revenueData} />
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
+          <div className="bg-white dark:bg-[#1E1E1E] p-6 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 flex flex-col transition-colors">
             <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold">Live Queue</h3>
-                <span className="text-xs font-black text-orange-500 bg-orange-50 px-2 py-1 rounded">PRIORITY ON</span>
+                <h3 className="text-xl font-bold dark:text-white">Live Queue</h3>
+                <span className="text-xs font-black text-orange-500 bg-orange-50 dark:bg-orange-900/30 px-2 py-1 rounded">PRIORITY ON</span>
             </div>
             <div className="space-y-4 flex-1 overflow-y-auto max-h-[400px]">
               {[
@@ -208,13 +208,13 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
                 { name: 'Musa', type: 'tip', msg: 'Great energy today!', price: 2 },
                 { name: 'Efya', type: 'shoutout', msg: 'Testing the new AirPay link!', price: 5 },
               ].map((item, i) => (
-                <div key={i} className="flex gap-4 p-4 hover:bg-gray-50 rounded-2xl transition-all group items-center">
-                   <div className="w-12 h-12 rounded-xl bg-orange-50 flex-shrink-0 flex items-center justify-center text-orange-500 font-bold">
+                <div key={i} className="flex gap-4 p-4 hover:bg-gray-50 dark:hover:bg-[#2A2A2A] rounded-2xl transition-all group items-center">
+                   <div className="w-12 h-12 rounded-xl bg-orange-50 dark:bg-orange-900/20 flex-shrink-0 flex items-center justify-center text-orange-500 dark:text-orange-400 font-bold">
                       ${item.price}
                    </div>
                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-black text-gray-900 truncate">{item.name} <span className="font-normal text-gray-400 capitalize">• {item.type}</span></p>
-                      <p className="text-xs text-gray-500 mt-1 line-clamp-1 italic">"{item.msg}"</p>
+                      <p className="text-sm font-black text-gray-900 dark:text-white truncate">{item.name} <span className="font-normal text-gray-400 dark:text-gray-500 capitalize">• {item.type}</span></p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-1 italic">"{item.msg}"</p>
                    </div>
                    <button onClick={() => handleAction(`Processing ${item.type} from ${item.name}`)} className="opacity-0 group-hover:opacity-100 bg-[#2C5F2D] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105 active:scale-95">READ</button>
                 </div>

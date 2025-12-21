@@ -10,17 +10,17 @@ interface HomeProps {
 
 const Home: React.FC<HomeProps> = ({ onSelectStation }) => {
   return (
-    <div className="min-h-screen md:ml-64 p-6 md:p-10 african-pattern pb-24">
+    <div className="min-h-screen md:ml-64 p-6 md:p-10 african-pattern pb-24 dark:bg-[#121212] transition-colors">
       <div className="max-w-6xl mx-auto space-y-12">
         {/* Header Section */}
         <div className="space-y-4 pt-10">
-          <div className="inline-flex items-center gap-2 bg-orange-100 text-[#E5A443] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4">
+          <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-900/30 text-[#E5A443] px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-4">
             <Radio size={14} /> The Voice of the Continent
           </div>
-          <h1 className="text-6xl md:text-8xl font-black text-gray-900 tracking-tighter leading-[0.9]">
+          <h1 className="text-6xl md:text-8xl font-black text-gray-900 dark:text-white tracking-tighter leading-[0.9]">
             Radio <span className="text-[#E5A443] drop-shadow-sm">Powered</span> <br className="hidden md:block"/> by the People.
           </h1>
-          <p className="text-xl text-gray-500 max-w-2xl leading-relaxed">
+          <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl leading-relaxed">
             ARN44 is the monetization engine for African radio. Join thousands of listeners supporting local independent voices.
           </p>
           
@@ -29,7 +29,7 @@ const Home: React.FC<HomeProps> = ({ onSelectStation }) => {
             <input 
               type="text" 
               placeholder="Search by station, city, or country..." 
-              className="w-full p-7 pl-16 rounded-[2rem] bg-white shadow-2xl border-2 border-transparent outline-none text-lg focus:border-[#E5A443]/50 transition-all placeholder:text-gray-300"
+              className="w-full p-7 pl-16 rounded-[2rem] bg-white dark:bg-[#1E1E1E] dark:text-white shadow-2xl border-2 border-transparent outline-none text-lg focus:border-[#E5A443]/50 transition-all placeholder:text-gray-300 dark:placeholder:text-gray-600"
             />
           </div>
         </div>
@@ -37,23 +37,23 @@ const Home: React.FC<HomeProps> = ({ onSelectStation }) => {
         {/* Dynamic Stats Banner */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-                { label: 'Active Stations', val: '1.2k+', icon: Radio, color: 'text-blue-500' },
-                { label: 'Daily Listeners', val: '2.5M+', icon: Users, color: 'text-green-500' },
-                { label: 'Direct Revenue', val: '$140k', icon: Wallet, color: 'text-orange-500' },
-                { label: 'Countries', val: '54', icon: Globe, color: 'text-purple-500' },
+                { label: 'Active Stations', val: '1.2k+', icon: Radio, color: 'text-blue-500 dark:text-blue-400' },
+                { label: 'Daily Listeners', val: '2.5M+', icon: Users, color: 'text-green-500 dark:text-green-400' },
+                { label: 'Direct Revenue', val: '$140k', icon: Wallet, color: 'text-orange-500 dark:text-orange-400' },
+                { label: 'Countries', val: '54', icon: Globe, color: 'text-purple-500 dark:text-purple-400' },
             ].map((stat, i) => (
-                <div key={i} className="bg-white/60 backdrop-blur-sm p-6 rounded-[2rem] border border-white/40 shadow-sm flex flex-col items-center text-center space-y-1">
+                <div key={i} className="bg-white/60 dark:bg-[#1E1E1E]/60 backdrop-blur-sm p-6 rounded-[2rem] border border-white/40 dark:border-gray-800 shadow-sm flex flex-col items-center text-center space-y-1">
                     <stat.icon size={20} className={stat.color} />
-                    <span className="text-2xl font-black text-gray-900 tracking-tight">{stat.val}</span>
-                    <span className="text-[10px] font-black uppercase text-gray-400 tracking-widest">{stat.label}</span>
+                    <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">{stat.val}</span>
+                    <span className="text-[10px] font-black uppercase text-gray-400 dark:text-gray-500 tracking-widest">{stat.label}</span>
                 </div>
             ))}
         </div>
 
         {/* Featured Stations */}
         <section className="space-y-8">
-          <div className="flex justify-between items-end border-b-2 border-gray-100 pb-4">
-            <h2 className="text-4xl font-black text-gray-900">Explore Stations</h2>
+          <div className="flex justify-between items-end border-b-2 border-gray-100 dark:border-gray-800 pb-4">
+            <h2 className="text-4xl font-black text-gray-900 dark:text-white">Explore Stations</h2>
             <button 
               onClick={() => alert("Loading full station directory...")}
               className="text-[#E5A443] font-black flex items-center gap-1 hover:gap-3 transition-all tracking-tighter"
@@ -67,11 +67,11 @@ const Home: React.FC<HomeProps> = ({ onSelectStation }) => {
               <div 
                 key={station.id}
                 onClick={() => onSelectStation(station)}
-                className="bg-white group rounded-[3rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all cursor-pointer border border-gray-50 hover:-translate-y-3"
+                className="bg-white dark:bg-[#1E1E1E] group rounded-[3rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all cursor-pointer border border-gray-50 dark:border-gray-800 hover:-translate-y-3"
               >
                 <div className="h-56 relative overflow-hidden">
                   <img src={station.logo} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={station.name} />
-                  <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl flex items-center gap-1.5 text-[10px] font-black uppercase shadow-xl tracking-widest">
+                  <div className="absolute top-6 left-6 bg-white/95 dark:bg-[#1E1E1E]/95 backdrop-blur-md px-4 py-2 rounded-2xl flex items-center gap-1.5 text-[10px] font-black uppercase shadow-xl tracking-widest dark:text-[#E5A443]">
                     <MapPin size={12} className="text-[#E5A443]" />
                     {station.country}
                   </div>
@@ -82,15 +82,15 @@ const Home: React.FC<HomeProps> = ({ onSelectStation }) => {
                 </div>
                 <div className="p-8 space-y-4">
                   <div>
-                    <h3 className="text-3xl font-black text-gray-900 mb-2 leading-none">{station.name}</h3>
-                    <p className="text-gray-500 line-clamp-2 text-sm leading-relaxed">{station.description}</p>
+                    <h3 className="text-3xl font-black text-gray-900 dark:text-white mb-2 leading-none">{station.name}</h3>
+                    <p className="text-gray-500 dark:text-gray-400 line-clamp-2 text-sm leading-relaxed">{station.description}</p>
                   </div>
-                  <div className="flex items-center justify-between pt-6 border-t border-gray-50">
+                  <div className="flex items-center justify-between pt-6 border-t border-gray-50 dark:border-gray-800">
                     <div className="flex -space-x-3">
                       {[1,2,3].map(i => (
-                        <img key={i} src={`https://picsum.photos/seed/${i + station.id}/100/100`} className="w-12 h-12 rounded-full border-4 border-white object-cover shadow-sm" alt="Supporter" />
+                        <img key={i} src={`https://picsum.photos/seed/${i + station.id}/100/100`} className="w-12 h-12 rounded-full border-4 border-white dark:border-[#1E1E1E] object-cover shadow-sm" alt="Supporter" />
                       ))}
-                      <div className="w-12 h-12 rounded-full border-4 border-white bg-[#FCF8F1] flex items-center justify-center text-[10px] font-black text-gray-400">+20k</div>
+                      <div className="w-12 h-12 rounded-full border-4 border-white dark:border-[#1E1E1E] bg-[#FCF8F1] dark:bg-[#2A2A2A] flex items-center justify-center text-[10px] font-black text-gray-400 dark:text-gray-500">+20k</div>
                     </div>
                     <button 
                       onClick={(e) => {
@@ -109,7 +109,7 @@ const Home: React.FC<HomeProps> = ({ onSelectStation }) => {
         </section>
 
         {/* Global Advertiser Hero */}
-        <div className="bg-[#1A1A1A] rounded-[4rem] p-16 text-white relative overflow-hidden group">
+        <div className="bg-[#1A1A1A] dark:bg-black rounded-[4rem] p-16 text-white relative overflow-hidden group">
             <div className="relative z-10 space-y-8 max-w-2xl">
                 <div className="bg-white/10 w-fit px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest">Ad Network</div>
                 <h2 className="text-5xl md:text-7xl font-black leading-[0.85] tracking-tighter">

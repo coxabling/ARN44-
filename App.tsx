@@ -12,6 +12,19 @@ const App: React.FC = () => {
   const [currentView, setCurrentView] = useState('home');
   const [selectedStation, setSelectedStation] = useState<Station | null>(null);
   const [userRole, setUserRole] = useState<'station' | 'advertiser' | 'admin' | 'supporter'>('admin');
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    return localStorage.getItem('theme') === 'dark';
+  });
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  }, [isDarkMode]);
 
   // URL routing emulation
   useEffect(() => {
@@ -48,6 +61,8 @@ const App: React.FC = () => {
     setCurrentView('station-profile');
   };
 
+  const toggleDarkMode = () => setIsDarkMode(!isDarkMode);
+
   const renderView = () => {
     switch(currentView) {
       case 'home':
@@ -60,22 +75,22 @@ const App: React.FC = () => {
         return <AdvertiserDashboard />;
       case 'admin-dash':
         return (
-          <div className="md:ml-64 p-10 african-pattern min-h-screen">
-            <h1 className="text-4xl font-black mb-6">Network Control Center</h1>
-            <div className="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 text-center">
-              <p className="text-gray-500 mb-6">Aggregate network analytics and cross-station auditing for ARN44 Administrators.</p>
+          <div className="md:ml-64 p-10 african-pattern min-h-screen dark:bg-[#121212] transition-colors">
+            <h1 className="text-4xl font-black mb-6 dark:text-white">Network Control Center</h1>
+            <div className="bg-white dark:bg-[#1E1E1E] p-10 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-800 text-center">
+              <p className="text-gray-500 dark:text-gray-400 mb-6">Aggregate network analytics and cross-station auditing for ARN44 Administrators.</p>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="p-8 bg-gray-50 rounded-2xl border border-gray-100">
-                  <h4 className="text-gray-400 font-bold mb-2">NETWORK REVENUE</h4>
-                  <p className="text-4xl font-black text-green-600">$1.2M</p>
+                <div className="p-8 bg-gray-50 dark:bg-[#2A2A2A] rounded-2xl border border-gray-100 dark:border-gray-700">
+                  <h4 className="text-gray-400 dark:text-gray-500 font-bold mb-2">NETWORK REVENUE</h4>
+                  <p className="text-4xl font-black text-green-600 dark:text-green-400">$1.2M</p>
                 </div>
-                <div className="p-8 bg-gray-50 rounded-2xl border border-gray-100">
-                  <h4 className="text-gray-400 font-bold mb-2">ACTIVE STATIONS</h4>
-                  <p className="text-4xl font-black text-blue-600">1,245</p>
+                <div className="p-8 bg-gray-50 dark:bg-[#2A2A2A] rounded-2xl border border-gray-100 dark:border-gray-700">
+                  <h4 className="text-gray-400 dark:text-gray-500 font-bold mb-2">ACTIVE STATIONS</h4>
+                  <p className="text-4xl font-black text-blue-600 dark:text-blue-400">1,245</p>
                 </div>
-                <div className="p-8 bg-gray-50 rounded-2xl border border-gray-100">
-                  <h4 className="text-gray-400 font-bold mb-2">ADS SERVING</h4>
-                  <p className="text-4xl font-black text-orange-600">4,890</p>
+                <div className="p-8 bg-gray-50 dark:bg-[#2A2A2A] rounded-2xl border border-gray-100 dark:border-gray-700">
+                  <h4 className="text-gray-400 dark:text-gray-500 font-bold mb-2">ADS SERVING</h4>
+                  <p className="text-4xl font-black text-orange-600 dark:text-orange-400">4,890</p>
                 </div>
               </div>
             </div>
@@ -87,21 +102,27 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FCF8F1]">
-      <Navigation currentView={currentView} onNavigate={navigateTo} role={userRole} />
+    <div className="min-h-screen bg-[#FCF8F1] dark:bg-[#121212] transition-colors">
+      <Navigation 
+        currentView={currentView} 
+        onNavigate={navigateTo} 
+        role={userRole} 
+        isDarkMode={isDarkMode} 
+        onToggleDarkMode={toggleDarkMode} 
+      />
       <main className="pb-20 md:pb-0">
         {renderView()}
       </main>
 
       {/* Floating Network Alert Emulation */}
       <div className="fixed bottom-24 right-6 z-50 pointer-events-none hidden md:block">
-        <div className="bg-white/90 backdrop-blur shadow-2xl p-4 rounded-2xl border-l-4 border-green-500 flex items-center gap-4 animate-bounce">
-          <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-black">
+        <div className="bg-white/90 dark:bg-[#1E1E1E]/90 backdrop-blur shadow-2xl p-4 rounded-2xl border-l-4 border-green-500 flex items-center gap-4 animate-bounce">
+          <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400 font-black">
             $
           </div>
           <div>
-            <p className="text-xs font-bold text-gray-400">LIVE NETWORK ACTIVITY</p>
-            <p className="text-sm font-bold">Kofi sent $5 to Nairobi Beats FM</p>
+            <p className="text-xs font-bold text-gray-400 dark:text-gray-500">LIVE NETWORK ACTIVITY</p>
+            <p className="text-sm font-bold dark:text-white">Kofi sent $5 to Nairobi Beats FM</p>
           </div>
         </div>
       </div>

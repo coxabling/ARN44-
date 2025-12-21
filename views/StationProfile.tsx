@@ -63,18 +63,18 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
   };
 
   const monetizationButtons = [
-    { id: 'shoutout', label: 'Shoutout', icon: MessageCircle, color: 'bg-orange-100 text-orange-700', active: station.features.shoutouts, popular: true },
-    { id: 'tip', label: 'Tip DJ', icon: DollarSign, color: 'bg-yellow-100 text-yellow-700', active: station.features.tips, popular: false },
-    { id: 'request', label: 'Request Song', icon: Music, color: 'bg-blue-100 text-blue-700', active: station.features.requests, popular: false },
-    { id: 'subscription', label: 'Subscribe', icon: Heart, color: 'bg-red-100 text-red-700', active: station.features.subscriptions, popular: false },
+    { id: 'shoutout', label: 'Shoutout', icon: MessageCircle, color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400', active: station.features.shoutouts, popular: true },
+    { id: 'tip', label: 'Tip DJ', icon: DollarSign, color: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400', active: station.features.tips, popular: false },
+    { id: 'request', label: 'Request Song', icon: Music, color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400', active: station.features.requests, popular: false },
+    { id: 'subscription', label: 'Subscribe', icon: Heart, color: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400', active: station.features.subscriptions, popular: false },
   ];
 
   return (
-    <div className="min-h-screen pb-24 md:pb-0 md:ml-64 p-4 md:p-10 african-pattern">
+    <div className="min-h-screen pb-24 md:pb-0 md:ml-64 p-4 md:p-10 african-pattern dark:bg-[#121212] transition-colors">
       <div className="max-w-4xl mx-auto space-y-6">
         
         {/* Social Proof Ticker */}
-        <div className="bg-black/90 text-[#E5A443] px-6 py-3 rounded-full flex items-center gap-3 shadow-xl border border-[#E5A443]/20 overflow-hidden">
+        <div className="bg-black/90 dark:bg-black/40 text-[#E5A443] px-6 py-3 rounded-full flex items-center gap-3 shadow-xl border border-[#E5A443]/20 overflow-hidden">
             <Zap size={18} className="animate-pulse fill-[#E5A443]" />
             <span className="text-sm font-bold tracking-wide uppercase whitespace-nowrap overflow-hidden">
                 LIVE: {liveTicker}
@@ -82,12 +82,12 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
         </div>
 
         {/* Hero Section */}
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-orange-100 overflow-hidden relative">
+        <div className="bg-white dark:bg-[#1E1E1E] rounded-3xl p-6 shadow-sm border border-orange-100 dark:border-gray-800 overflow-hidden relative transition-colors">
           <div className="absolute top-0 right-0 p-4 flex gap-2">
-             <div className="flex items-center gap-1 bg-red-100 text-red-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">
+             <div className="flex items-center gap-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 px-3 py-1 rounded-full text-[10px] font-black uppercase">
                 <Activity size={12} className="animate-pulse" /> Signal: High
              </div>
-             <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-black uppercase flex items-center gap-1">
+             <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded-full text-[10px] font-black uppercase flex items-center gap-1">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> LIVE
              </span>
           </div>
@@ -102,8 +102,8 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
               )}
             </div>
             <div className="flex-1 space-y-2">
-              <h1 className="text-3xl md:text-5xl font-black text-gray-900 leading-tight">{station.name}</h1>
-              <p className="text-gray-500 text-lg">{station.country} • {station.description}</p>
+              <h1 className="text-3xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight">{station.name}</h1>
+              <p className="text-gray-500 dark:text-gray-400 text-lg">{station.country} • {station.description}</p>
               
               <div className="flex flex-wrap gap-4 pt-4 justify-center md:justify-start">
                 <button 
@@ -117,7 +117,7 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
                 </button>
                 <button 
                   onClick={handleShare}
-                  className="flex items-center gap-2 border-2 border-green-500 text-green-600 px-8 py-3 rounded-full font-bold hover:bg-green-50 transition-all"
+                  className="flex items-center gap-2 border-2 border-green-500 dark:border-green-700 text-green-600 dark:text-green-400 px-8 py-3 rounded-full font-bold hover:bg-green-50 dark:hover:bg-green-900/20 transition-all"
                 >
                   <Share2 size={20} />
                   WHATSAPP
@@ -128,7 +128,7 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
 
           {/* Simulated Waveform Visualizer */}
           {isPlaying && (
-            <div className="absolute bottom-0 left-0 right-0 h-16 flex items-end justify-center gap-1 opacity-20 pointer-events-none px-10">
+            <div className="absolute bottom-0 left-0 right-0 h-16 flex items-end justify-center gap-1 opacity-20 dark:opacity-40 pointer-events-none px-10">
                 {[...Array(30)].map((_, i) => (
                     <div 
                       key={i} 
@@ -156,7 +156,7 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
                   <Flame size={14} fill="white" />
                 </div>
               )}
-              <div className="p-3 bg-white rounded-full shadow-inner">
+              <div className="p-3 bg-white dark:bg-[#2A2A2A] rounded-full shadow-inner">
                 <btn.icon size={28} />
               </div>
               <span className="font-bold text-sm text-center">{btn.label}</span>
@@ -185,8 +185,8 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
         </div>
 
         {/* Recent Supporters */}
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
-            <h3 className="text-xl font-bold mb-6 text-gray-800 flex items-center gap-2">
+        <div className="bg-white dark:bg-[#1E1E1E] rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
+            <h3 className="text-xl font-bold mb-6 text-gray-800 dark:text-white flex items-center gap-2">
               <Zap size={20} className="text-yellow-500" /> Recent Superstars
             </h3>
             <div className="space-y-4">
@@ -195,14 +195,14 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
                   { name: 'Amaka', msg: 'Shoutout to the best DJ in Lagos!', type: 'shoutout', flag: '🇳🇬' },
                   { name: 'David W.', msg: 'Play some Sauti Sol please!', type: 'request', flag: '🇰🇪' },
                 ].map((s, i) => (
-                  <div key={i} className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 transition-all hover:bg-white hover:shadow-md">
+                  <div key={i} className="flex items-center gap-4 p-4 bg-gray-50 dark:bg-[#2A2A2A] rounded-2xl border border-gray-100 dark:border-gray-700 transition-all hover:bg-white dark:hover:bg-[#333] hover:shadow-md">
                     <div className="text-2xl">{s.flag}</div>
                     <div className="flex-1">
                         <div className="flex justify-between">
-                            <span className="font-bold text-gray-900">{s.name}</span>
+                            <span className="font-bold text-gray-900 dark:text-white">{s.name}</span>
                             <span className="text-[10px] uppercase font-black text-[#E5A443] tracking-tighter">{s.type}</span>
                         </div>
-                        <p className="text-gray-500 text-sm">"{s.msg}"</p>
+                        <p className="text-gray-500 dark:text-gray-400 text-sm">"{s.msg}"</p>
                     </div>
                   </div>
                 ))}
@@ -214,7 +214,7 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
       {!showAIChat && (
         <button 
           onClick={() => setShowAIChat(true)}
-          className="fixed bottom-24 md:bottom-10 right-10 bg-black text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all z-50 flex items-center gap-2 group"
+          className="fixed bottom-24 md:bottom-10 right-10 bg-black dark:bg-[#1E1E1E] text-white p-4 rounded-full shadow-2xl hover:scale-110 transition-all z-50 flex items-center gap-2 group border border-gray-100 dark:border-gray-800"
         >
           <div className="bg-[#E5A443] p-1 rounded-full text-black group-hover:rotate-12 transition-transform">
             <Sparkles size={16} />
@@ -225,7 +225,7 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
 
       {/* AI Chat Window */}
       {showAIChat && (
-        <div className="fixed bottom-24 md:bottom-10 right-6 w-[320px] md:w-[380px] bg-white rounded-3xl shadow-2xl z-[100] border-2 border-gray-50 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5">
+        <div className="fixed bottom-24 md:bottom-10 right-6 w-[320px] md:w-[380px] bg-white dark:bg-[#1E1E1E] rounded-3xl shadow-2xl z-[100] border-2 border-gray-50 dark:border-gray-800 flex flex-col overflow-hidden animate-in slide-in-from-bottom-5">
            <div className="bg-black p-4 flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <Sparkles size={18} className="text-[#E5A443]" />
@@ -236,14 +236,14 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
               </button>
            </div>
            
-           <div className="h-[300px] overflow-y-auto p-4 space-y-4 bg-gray-50">
-              <div className="bg-[#E5A443]/10 border border-[#E5A443]/20 p-3 rounded-2xl text-xs text-gray-800">
+           <div className="h-[300px] overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-[#2A2A2A]">
+              <div className="bg-[#E5A443]/10 dark:bg-[#E5A443]/5 border border-[#E5A443]/20 p-3 rounded-2xl text-xs text-gray-800 dark:text-gray-200">
                 Hi! I'm your AI Radio Sidekick. Ask me anything about {station.name} or African music! 🌍✨
               </div>
               {chatHistory.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   <div className={`max-w-[80%] p-3 rounded-2xl text-sm ${
-                    msg.role === 'user' ? 'bg-[#2C5F2D] text-white' : 'bg-white border border-gray-100 text-gray-800 shadow-sm'
+                    msg.role === 'user' ? 'bg-[#2C5F2D] text-white' : 'bg-white dark:bg-[#1E1E1E] border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-white shadow-sm'
                   }`}>
                     {msg.text}
                   </div>
@@ -258,14 +258,14 @@ const StationProfile: React.FC<StationProfileProps> = ({ station }) => {
               )}
            </div>
 
-           <div className="p-4 border-t border-gray-100 flex gap-2">
+           <div className="p-4 border-t border-gray-100 dark:border-gray-800 flex gap-2">
               <input 
                 type="text" 
                 value={chatMessage}
                 onChange={(e) => setChatMessage(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleChatSend()}
                 placeholder="Type your message..."
-                className="flex-1 bg-gray-100 p-2 px-4 rounded-xl text-sm outline-none focus:ring-1 ring-[#E5A443]"
+                className="flex-1 bg-gray-100 dark:bg-[#2A2A2A] dark:text-white p-2 px-4 rounded-xl text-sm outline-none focus:ring-1 ring-[#E5A443]"
               />
               <button onClick={handleChatSend} className="bg-[#E5A443] text-black p-2 rounded-xl">
                 <Send size={18} />
