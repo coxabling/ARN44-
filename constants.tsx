@@ -30,7 +30,7 @@ export const MOCK_STATIONS: Station[] = [
     name: 'Lagos Life Radio',
     ownerId: 'u2',
     country: 'Nigeria',
-    streamUrl: 'https://stream.zeno.fm/s4r7h6v5m0huv', // Placeholder
+    streamUrl: 'https://stream.zeno.fm/s4r7h6v5m0huv',
     logo: 'https://images.unsplash.com/photo-1493225255756-d9584f8606e9?q=80&w=400&h=400&fit=crop',
     description: 'The epicenter of global Afrobeats. Broadcasting live from the heart of Lagos to the world.',
     features: { tips: true, requests: false, shoutouts: true, subscriptions: true },
@@ -63,6 +63,58 @@ export const MOCK_STATIONS: Station[] = [
     metrics: { totalRevenue: 2100, subscribers: 145, monthlyRevenue: 480 },
     onboardingProgress: 100,
     isOptimized: true
+  },
+  {
+    id: '7',
+    name: 'Pamtengo Radio',
+    ownerId: 'u7',
+    country: 'Malawi',
+    streamUrl: 'https://music-station.live/listen/pamtengo_radio/radio.mp3',
+    logo: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?q=80&w=400&h=400&fit=crop',
+    description: 'Authentic sounds of Malawi. Connecting the community through music, talk, and culture.',
+    features: { tips: true, requests: true, shoutouts: true, subscriptions: true },
+    metrics: { totalRevenue: 4500, subscribers: 210, monthlyRevenue: 850 },
+    onboardingProgress: 100,
+    isOptimized: true
+  },
+  {
+    id: '5',
+    name: 'NRG Radio',
+    ownerId: 'u5',
+    country: 'Uganda',
+    streamUrl: 'https://music-station.live/listen/nam_radio_local/autodj.mp3',
+    logo: 'https://images.unsplash.com/photo-1520110120385-c285d6b21c7b?q=80&w=400&h=400&fit=crop',
+    description: 'The energy of the youth. High-octane hits and global charts from the heart of Kampala.',
+    features: { tips: true, requests: true, shoutouts: true, subscriptions: true },
+    metrics: { totalRevenue: 1500, subscribers: 90, monthlyRevenue: 300 },
+    onboardingProgress: 100,
+    isOptimized: true
+  },
+  {
+    id: '4',
+    name: 'High Grade Radio',
+    ownerId: 'u4',
+    country: 'Global',
+    streamUrl: 'https://music-station.live/listen/high_grade_radio/radio.mp3',
+    logo: 'https://images.unsplash.com/photo-1498038432885-c6f3f1b912ee?q=80&w=400&h=400&fit=crop',
+    description: 'Premium selection of Reggae, Dancehall, and African Riddims. High grade vibes only.',
+    features: { tips: true, requests: true, shoutouts: true, subscriptions: true },
+    metrics: { totalRevenue: 3200, subscribers: 180, monthlyRevenue: 650 },
+    onboardingProgress: 100,
+    isOptimized: true
+  },
+  {
+    id: '3',
+    name: 'Accra Highlife',
+    ownerId: 'u3',
+    country: 'Ghana',
+    streamUrl: 'https://stream.zeno.fm/s4r7h6v5m0huv',
+    logo: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?q=80&w=400&h=400&fit=crop',
+    description: 'Preserving the gold of Ghana music. From legendary Highlife to the latest Hiplife classics.',
+    features: { tips: true, requests: true, shoutouts: true, subscriptions: false },
+    metrics: { totalRevenue: 5400, subscribers: 120, monthlyRevenue: 400 },
+    onboardingProgress: 40,
+    isOptimized: false
   }
 ];
 

@@ -43,6 +43,10 @@
       :root {
         --primary: #E5A443;
       }
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
       body {
         font-family: 'Space Grotesk', sans-serif;
         background-color: #FDFCFB;
@@ -66,9 +70,9 @@
       }
 
       .glass {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
+        backdrop-filter: blur(12px);
+        background: rgba(255, 255, 255, 0.7);
       }
       .dark .glass {
         background: rgba(10, 10, 10, 0.7);
