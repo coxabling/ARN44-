@@ -1,7 +1,8 @@
 
-import React, { useState } from 'react';
-import { Users, Wallet, ArrowUpRight, MessageSquare, Music, Rocket, CheckCircle2, Share2, Zap } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Users, Wallet, ArrowUpRight, MessageSquare, Music, Rocket, CheckCircle2, Share2, Zap, BrainCircuit, Sparkles, Loader2 } from 'lucide-react';
 import { Station } from '../types';
+import { getStationAdvice } from '../services/geminiService';
 
 const revenueData = [
   { name: 'Mon', revenue: 400 },
@@ -13,59 +14,31 @@ const revenueData = [
   { name: 'Sun', revenue: 1100 },
 ];
 
-/**
- * A lightweight SVG-based Area Chart to replace heavy recharts dependency.
- * This avoids 'eval' usage and is much faster on low-bandwidth connections.
- */
 const SimpleAreaChart = ({ data }: { data: typeof revenueData }) => {
   const maxVal = Math.max(...data.map(d => d.revenue)) * 1.2;
   const width = 400;
   const height = 200;
-  
   const points = data.map((d, i) => {
     const x = (i / (data.length - 1)) * width;
     const y = height - (d.revenue / maxVal) * height;
     return `${x},${y}`;
   }).join(' ');
-
   const fillPath = `0,${height} ${points} ${width},${height}`;
 
   return (
     <div className="w-full h-full relative">
       <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full overflow-visible">
-        {/* Grid lines */}
         {[0, 0.25, 0.5, 0.75, 1].map((p) => (
-          <line 
-            key={p} 
-            x1="0" y1={height * p} x2={width} y2={height * p} 
-            stroke="#f0f0f0" strokeWidth="1" 
-          />
+          <line key={p} x1="0" y1={height * p} x2={width} y2={height * p} stroke="#f0f0f0" strokeWidth="1" />
         ))}
-        {/* Area Fill */}
         <polygon points={fillPath} fill="rgba(229, 164, 67, 0.1)" />
-        {/* Line */}
-        <polyline
-          fill="none"
-          stroke="#E5A443"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          points={points}
-        />
-        {/* Data points */}
-        {data.map((d, i) => {
-          const x = (i / (data.length - 1)) * width;
-          const y = height - (d.revenue / maxVal) * height;
-          return (
-            <circle key={i} cx={x} cy={y} r="4" fill="#E5A443" stroke="white" strokeWidth="2" />
-          );
-        })}
-      </svg>
-      {/* Labels */}
-      <div className="flex justify-between mt-2 px-1">
-        {data.map(d => (
-          <span key={d.name} className="text-[10px] font-bold text-gray-400">{d.name}</span>
+        <polyline fill="none" stroke="#E5A443" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" points={points} />
+        {data.map((d, i) => (
+          <circle key={i} cx={(i / (data.length - 1)) * width} cy={height - (d.revenue / maxVal) * height} r="4" fill="#E5A443" stroke="white" strokeWidth="2" />
         ))}
+      </svg>
+      <div className="flex justify-between mt-2 px-1">
+        {data.map(d => <span key={d.name} className="text-[10px] font-bold text-gray-400">{d.name}</span>)}
       </div>
     </div>
   );
@@ -73,12 +46,28 @@ const SimpleAreaChart = ({ data }: { data: typeof revenueData }) => {
 
 const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
   const [isOptimizing, setIsOptimizing] = useState(false);
+  const [aiAdvice, setAiAdvice] = useState('Generating strategy...');
+  const [loadingAdvice, setLoadingAdvice] = useState(true);
   const [checklist, setChecklist] = useState([
     { id: 1, label: "Add Station Logo", done: true },
     { id: 2, label: "Verify Stream URL", done: true },
     { id: 3, label: "First WhatsApp Share", done: station.onboardingProgress > 50 },
     { id: 4, label: "Set up $1 Micro-tips", done: station.isOptimized },
   ]);
+
+  useEffect(() => {
+    const fetchAdvice = async () => {
+      try {
+        const advice = await getStationAdvice(station.name, station.metrics);
+        setAiAdvice(advice || "Keep engaging your listeners!");
+      } catch (err) {
+        setAiAdvice("Focus on diaspora subscriptions this month.");
+      } finally {
+        setLoadingAdvice(false);
+      }
+    };
+    fetchAdvice();
+  }, [station]);
 
   const handleOptimize = () => {
     setIsOptimizing(true);
@@ -101,67 +90,68 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
             <p className="text-gray-500">Managing {station.name}</p>
           </div>
           <div className="flex gap-3">
-             <button 
-              onClick={() => handleAction('Edit Profile')}
-              className="bg-white border-2 border-[#E5A443] text-[#E5A443] px-6 py-2 rounded-xl font-bold hover:bg-[#E5A443]/5 transition-colors"
-             >
-               Edit Profile
-             </button>
-             <button 
-              onClick={() => handleAction('Withdraw Funds')}
-              className="bg-[#E5A443] text-white px-6 py-2 rounded-xl font-bold shadow-lg shadow-orange-200 hover:scale-105 active:scale-95 transition-transform"
-             >
-               Withdraw Funds
-             </button>
+             <button onClick={() => handleAction('Edit Profile')} className="bg-white border-2 border-[#E5A443] text-[#E5A443] px-6 py-2 rounded-xl font-bold hover:bg-[#E5A443]/5 transition-colors">Edit Profile</button>
+             <button onClick={() => handleAction('Withdraw Funds')} className="bg-[#E5A443] text-white px-6 py-2 rounded-xl font-bold shadow-lg shadow-orange-200 hover:scale-105 active:scale-95 transition-transform">Withdraw Funds</button>
           </div>
         </header>
 
-        {/* 30-Day Growth Optimization Module */}
-        <div className="bg-gradient-to-r from-[#2C5F2D] to-[#3a7c3c] rounded-[2rem] p-8 text-white shadow-xl flex flex-col lg:flex-row items-center gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Main Growth Plan */}
+          <div className="lg:col-span-2 bg-gradient-to-r from-[#2C5F2D] to-[#3a7c3c] rounded-[2rem] p-8 text-white shadow-xl flex flex-col md:flex-row items-center gap-8">
             <div className="flex-1 space-y-4">
                 <div className="inline-flex items-center gap-2 px-4 py-1 bg-white/20 rounded-full text-xs font-bold uppercase tracking-wider">
                     <Rocket size={14} /> 30-Day Growth Plan
                 </div>
                 <h2 className="text-3xl font-black">Fastest Monetization Path</h2>
-                <p className="opacity-80">Our AI suggests enabling Shoutouts and Micro-Tips for your region. Stations using these defaults see 400% more volume.</p>
+                <p className="opacity-80">Stations using our micro-tipping defaults see 400% more transaction volume on average.</p>
                 <div className="flex gap-4 pt-2">
-                    <button 
-                        onClick={handleOptimize}
-                        disabled={isOptimizing}
-                        className="bg-[#E5A443] text-white px-8 py-3 rounded-2xl font-black flex items-center gap-2 hover:scale-105 active:scale-95 transition-transform disabled:opacity-50 disabled:scale-100"
-                    >
+                    <button onClick={handleOptimize} disabled={isOptimizing} className="bg-[#E5A443] text-white px-8 py-3 rounded-2xl font-black flex items-center gap-2 hover:scale-105 active:scale-95 transition-transform disabled:opacity-50 disabled:scale-100">
                         <Zap size={18} fill="white" />
-                        {isOptimizing ? 'APPLYING...' : 'APPLY OPTIMIZED SETTINGS'}
+                        {isOptimizing ? 'APPLYING...' : 'APPLY SETTINGS'}
                     </button>
-                    <button 
-                      onClick={() => handleAction('Growth Share')}
-                      className="bg-white/10 hover:bg-white/20 px-6 py-3 rounded-2xl font-bold transition-all flex items-center gap-2 active:scale-95"
-                    >
-                        <Share2 size={18} />
-                        DAILY GROWTH SHARE
+                    <button onClick={() => handleAction('Growth Share')} className="bg-white/10 hover:bg-white/20 px-6 py-3 rounded-2xl font-bold transition-all flex items-center gap-2 active:scale-95">
+                        <Share2 size={18} /> SHARE
                     </button>
                 </div>
             </div>
-            <div className="w-full lg:w-72 bg-white rounded-3xl p-6 text-gray-900 shadow-2xl">
-                <h4 className="font-black text-sm uppercase text-gray-400 mb-4 tracking-tighter">Launch Checklist</h4>
-                <div className="space-y-3">
+            <div className="w-full md:w-64 bg-white/5 backdrop-blur-md rounded-2xl p-5 border border-white/10">
+                 <h4 className="font-bold text-xs uppercase opacity-60 mb-3">Launch Readiness</h4>
+                 <div className="space-y-2">
                     {checklist.map(item => (
-                        <div key={item.id} className="flex items-center gap-3">
-                            <CheckCircle2 size={18} className={item.done ? "text-green-500" : "text-gray-200"} />
-                            <span className={`text-sm font-bold ${item.done ? "text-gray-900" : "text-gray-400"}`}>{item.label}</span>
+                        <div key={item.id} className="flex items-center gap-2 text-xs">
+                            <CheckCircle2 size={14} className={item.done ? "text-[#E5A443]" : "text-white/20"} />
+                            <span className={item.done ? "text-white" : "text-white/40"}>{item.label}</span>
                         </div>
                     ))}
-                </div>
-                <div className="mt-6 pt-4 border-t border-gray-100">
-                    <div className="flex justify-between text-xs font-black mb-2">
-                        <span>READY TO EARN</span>
-                        <span>{Math.round(checklist.filter(i=>i.done).length / checklist.length * 100)}%</span>
-                    </div>
-                    <div className="w-full bg-gray-100 h-2 rounded-full overflow-hidden">
-                        <div className="h-full bg-green-500 transition-all duration-1000" style={{ width: `${(checklist.filter(i=>i.done).length / checklist.length) * 100}%` }}></div>
-                    </div>
-                </div>
+                 </div>
             </div>
+          </div>
+
+          {/* AI Strategy Advice */}
+          <div className="bg-[#1A1A1A] p-8 rounded-[2rem] text-white shadow-2xl flex flex-col justify-between border border-white/5 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:scale-125 transition-transform">
+                <BrainCircuit size={100} />
+            </div>
+            <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-4">
+                    <Sparkles className="text-[#E5A443]" size={20} />
+                    <h3 className="text-xl font-black">AI Strategy</h3>
+                </div>
+                {loadingAdvice ? (
+                    <div className="flex items-center gap-3 py-4">
+                        <Loader2 className="animate-spin text-gray-500" />
+                        <span className="text-sm italic text-gray-400">Consulting network data...</span>
+                    </div>
+                ) : (
+                    <p className="text-lg font-medium leading-relaxed italic text-orange-50 underline decoration-[#E5A443]/30 decoration-wavy underline-offset-4">
+                        "{aiAdvice}"
+                    </p>
+                )}
+            </div>
+            <div className="mt-6">
+                <button onClick={() => alert("Detailed Strategy Coming Soon")} className="text-xs font-black text-[#E5A443] hover:underline">VIEW FULL REPORT →</button>
+            </div>
+          </div>
         </div>
 
         {/* Stats Grid */}
@@ -199,7 +189,6 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Custom SVG Chart */}
           <div className="lg:col-span-2 bg-white p-6 rounded-3xl shadow-sm border border-gray-100">
             <h3 className="text-xl font-bold mb-6">Revenue Growth (7d)</h3>
             <div className="h-80 w-full pt-4">
@@ -207,7 +196,6 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
             </div>
           </div>
 
-          {/* Pending Requests Queue */}
           <div className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100 flex flex-col">
             <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold">Live Queue</h3>
@@ -228,12 +216,7 @@ const StationDashboard: React.FC<{ station: Station }> = ({ station }) => {
                       <p className="text-sm font-black text-gray-900 truncate">{item.name} <span className="font-normal text-gray-400 capitalize">• {item.type}</span></p>
                       <p className="text-xs text-gray-500 mt-1 line-clamp-1 italic">"{item.msg}"</p>
                    </div>
-                   <button 
-                    onClick={() => handleAction(`Processing ${item.type} from ${item.name}`)}
-                    className="opacity-0 group-hover:opacity-100 bg-[#2C5F2D] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105 active:scale-95"
-                   >
-                     READ
-                   </button>
+                   <button onClick={() => handleAction(`Processing ${item.type} from ${item.name}`)} className="opacity-0 group-hover:opacity-100 bg-[#2C5F2D] text-white px-3 py-1.5 rounded-lg text-xs font-bold transition-all hover:scale-105 active:scale-95">READ</button>
                 </div>
               ))}
             </div>

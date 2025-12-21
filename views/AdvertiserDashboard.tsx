@@ -1,13 +1,31 @@
 
 import React, { useState } from 'react';
-import { Plus, Play, Info, MapPin, Target } from 'lucide-react';
+import { Plus, Play, Info, MapPin, Target, Sparkles, Wand2, Copy, Loader2 } from 'lucide-react';
 import { MOCK_ADS } from '../constants';
+import { generateAdScripts } from '../services/geminiService';
 
 const AdvertiserDashboard: React.FC = () => {
   const [ads, setAds] = useState(MOCK_ADS);
+  const [scriptPrompt, setScriptPrompt] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedScripts, setGeneratedScripts] = useState<any[]>([]);
 
   const handleAction = (label: string) => {
     alert(`${label} action triggered! Connect your AirPay44 account to proceed.`);
+  };
+
+  const handleGenerateScripts = async () => {
+    if (!scriptPrompt) return;
+    setIsGenerating(true);
+    try {
+      const scripts = await generateAdScripts(scriptPrompt);
+      setGeneratedScripts(scripts);
+    } catch (error) {
+      console.error(error);
+      alert("AI Script generation failed. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
   };
   
   return (
@@ -26,6 +44,65 @@ const AdvertiserDashboard: React.FC = () => {
             CREATE NEW CAMPAIGN
           </button>
         </header>
+
+        {/* AI Script Lab */}
+        <section className="bg-gradient-to-br from-[#E5A443] to-[#d48c2c] p-1 rounded-[2.5rem] shadow-xl">
+          <div className="bg-white rounded-[2.4rem] p-8 space-y-6">
+            <div className="flex items-center gap-3">
+              <div className="bg-[#E5A443] p-2 rounded-xl text-white">
+                <Sparkles size={24} />
+              </div>
+              <div>
+                <h2 className="text-2xl font-black text-gray-900">AI Script Lab</h2>
+                <p className="text-gray-500 text-sm">Let Gemini write your 30s radio spots instantly.</p>
+              </div>
+            </div>
+
+            <div className="flex gap-4">
+              <input 
+                type="text" 
+                value={scriptPrompt}
+                onChange={(e) => setScriptPrompt(e.target.value)}
+                placeholder="Describe your product (e.g., 'A fresh mango juice brand in Accra')..."
+                className="flex-1 p-4 rounded-2xl border-2 border-gray-100 focus:border-[#E5A443] outline-none transition-all"
+              />
+              <button 
+                onClick={handleGenerateScripts}
+                disabled={isGenerating || !scriptPrompt}
+                className="bg-black text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 hover:bg-gray-800 disabled:opacity-50 transition-all"
+              >
+                {isGenerating ? <Loader2 className="animate-spin" /> : <Wand2 size={20} />}
+                GENERATE
+              </button>
+            </div>
+
+            {generatedScripts.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4">
+                {generatedScripts.map((s, i) => (
+                  <div key={i} className="bg-orange-50 p-6 rounded-2xl border border-orange-100 space-y-3 flex flex-col justify-between">
+                    <div>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-[10px] font-black uppercase text-orange-600 bg-white px-2 py-1 rounded">Option {i+1}</span>
+                        <span className="text-[10px] font-bold text-gray-400 italic">{s.tone}</span>
+                      </div>
+                      <h4 className="font-bold text-gray-900 mb-2">{s.title}</h4>
+                      <p className="text-xs text-gray-600 leading-relaxed italic line-clamp-4">"{s.script}"</p>
+                    </div>
+                    <button 
+                      onClick={() => {
+                        navigator.clipboard.writeText(s.script);
+                        alert("Copied to clipboard!");
+                      }}
+                      className="w-full mt-4 py-2 bg-white border border-orange-200 text-orange-600 rounded-lg text-xs font-bold flex items-center justify-center gap-2 hover:bg-orange-100"
+                    >
+                      <Copy size={14} /> COPY SCRIPT
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
 
         {/* Ad Performance Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -86,51 +163,6 @@ const AdvertiserDashboard: React.FC = () => {
               </div>
             </div>
           ))}
-
-          {/* New Ad Placeholder */}
-          <button 
-            onClick={() => handleAction('Launch New Ad')}
-            className="border-4 border-dashed border-gray-200 rounded-3xl flex flex-col items-center justify-center p-10 text-gray-400 hover:border-[#E5A443] hover:text-[#E5A443] transition-all group bg-white/50"
-          >
-            <Plus size={48} className="mb-4 group-hover:scale-110 transition-transform" />
-            <span className="font-bold">LAUNCH NEW AD</span>
-          </button>
-        </div>
-
-        {/* Global Network Insights */}
-        <div className="bg-[#2C5F2D] rounded-3xl p-10 text-white flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
-            <div className="flex-1 space-y-4 relative z-10">
-                <h2 className="text-3xl font-black">Network Reach</h2>
-                <p className="text-green-100 text-lg">Your ads are distributed across 1,000+ independent radio stations across 54 African countries.</p>
-                <div className="flex gap-10 pt-4">
-                    <div>
-                        <p className="text-4xl font-black">12.5M</p>
-                        <p className="text-xs font-bold text-green-300">DAILY LISTENERS</p>
-                    </div>
-                    <div>
-                        <p className="text-4xl font-black">4.2M</p>
-                        <p className="text-xs font-bold text-green-300">DIASPORA REACH</p>
-                    </div>
-                </div>
-            </div>
-            <div className="w-full md:w-1/3 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20 relative z-10">
-                <h4 className="font-bold mb-4">Top Regions</h4>
-                <div className="space-y-3">
-                    {['West Africa', 'East Africa', 'Southern Africa', 'Global Diaspora'].map((region, i) => (
-                        <div key={i} className="flex flex-col gap-1 text-sm">
-                            <div className="flex justify-between">
-                              <span>{region}</span>
-                              <span className="text-[10px] font-bold opacity-60">{(80 - i*15)}%</span>
-                            </div>
-                            <div className="w-full h-1.5 bg-white/20 rounded-full overflow-hidden">
-                                <div className="h-full bg-white rounded-full transition-all duration-1000" style={{ width: `${80 - i*15}%` }} />
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-            {/* Design Element */}
-            <div className="absolute -bottom-24 -left-24 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
         </div>
       </div>
     </div>

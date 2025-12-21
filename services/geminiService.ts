@@ -1,9 +1,11 @@
 
-import { GoogleGenAI, Modality } from "@google/genai";
+import { GoogleGenAI, Modality, Type } from "@google/genai";
 
-// Fix: Updated initialization to strictly use process.env.API_KEY as per guidelines
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
+/**
+ * Plays a TTS payment alert for radio DJs
+ */
 export const playPaymentAlert = async (name: string, message: string, voice: string = 'Kore') => {
   try {
     const prompt = `Read this donation alert cheerfully: ${name} sent a tip and says: "${message}"`;
@@ -34,6 +36,47 @@ export const playPaymentAlert = async (name: string, message: string, voice: str
   } catch (error) {
     console.error("Failed to play AI alert", error);
   }
+};
+
+/**
+ * Generates radio ad scripts using Gemini 3
+ */
+export const generateAdScripts = async (prompt: string) => {
+  const response = await ai.models.generateContent({
+    model: 'gemini-3-flash-preview',
+    contents: `Generate 3 professional and catchy radio ad scripts (30 seconds each) based on this prompt: "${prompt}". 
+    Format them as a JSON list of objects with "title", "tone", and "script" properties. Use African cultural references where appropriate.`,
+    config: {
+      responseMimeType: "application/json",
+      responseSchema: {
+        type: Type.ARRAY,
+        items: {
+          type: Type.OBJECT,
+          properties: {
+            title: { type: Type.STRING },
+            tone: { type: Type.STRING },
+            script: { type: Type.STRING },
+          },
+          required: ["title", "tone", "script"],
+        },
+      },
+    },
+  });
+  
+  return JSON.parse(response.text || "[]");
+};
+
+/**
+ * AI Station Consultant
+ */
+export const getStationAdvice = async (stationName: string, metrics: any) => {
+  const response = await ai.models.generateContent({
+    model: 'gemini-3-flash-preview',
+    contents: `You are an expert radio station consultant for the African market. 
+    Analyze these metrics for "${stationName}": ${JSON.stringify(metrics)}. 
+    Give one specific, high-impact growth suggestion. Keep it under 50 words.`,
+  });
+  return response.text;
 };
 
 // Helpers for audio processing
